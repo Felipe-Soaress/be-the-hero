@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { FiArrowLeft } from "react-icons/fi";
 
 import api from "../../services/api";
@@ -15,9 +15,26 @@ const Register = () => {
   const [city, setCity] = useState("");
   const [uf, setUf] = useState("");
 
-  const handleRegister = (e) => {
+  const history = useHistory();
+
+  const handleRegister = async (e) => {
     e.preventDefault();
-    console.log(name);
+    const data = {
+      name,
+      email,
+      whatsapp,
+      city,
+      uf,
+    };
+
+    try {
+      const response = await api.post("ongs", data);
+
+      alert(`Seu ID de acesso: ${response.data.id}`);
+      history.push("/");
+    } catch (error) {
+      alert(error);
+    }
   };
 
   return (
